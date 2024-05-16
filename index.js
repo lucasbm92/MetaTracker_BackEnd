@@ -18,6 +18,8 @@ mongoose.connect("mongodb://localhost/mydb", {
 const pessoaSchema = new mongoose.Schema({
   id: Number,
   nome: String,
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
 });
 
 const Pessoa = mongoose.model("Pessoa", pessoaSchema);
@@ -55,7 +57,7 @@ app.put("/pessoas/:id", async (req, res) => {
 app.delete("/pessoas/:id", async (req, res) => {
   const { id } = req.params;
   await Pessoa.findByIdAndDelete(id);
-  res.json({ message: "Pessoa deleted successfully" });
+  res.json({ message: "Pessoa apagada com sucesso" });
 });
 
 // Rotas CRUD Meta
@@ -81,7 +83,41 @@ app.put("/meta/:id", async (req, res) => {
 app.delete("/meta/:id", async (req, res) => {
   const { id } = req.params;
   await Meta.findByIdAndDelete(id);
-  res.json({ message: "Meta item deleted successfully" });
+  res.json({ message: "Meta apagada com sucesso" });
+});
+
+// Cadastro
+app.post("/signup", async (req, res) => {
+  const { email, password } = req.body;
+
+  const existingUser = await Pessoa.findOne({ email });
+  if (existingUser) {
+    return res.status(400).json({ message: "Email já está em uso" });
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const user = new Pessoa({ email, password: hashedPassword });
+  await user.save();
+
+  res.status(201).json({ message: "Usuário cadastrado com sucesso" });
+});
+
+// Login
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await Pessoa.findOne({ email });
+  if (!user) {
+    return res.status(400).json({ message: "E-mail ou senha inválida" });
+  }
+
+  const validPassword = await bcrypt.compare(password, user.password);
+  if (!validPassword) {
+    return res.status(400).json({ message: "E-mail ou senha inválida" });
+  }
+
+  const token = jwt.sign({ id: user.id }, "your_jwt_secret");
+  res.json({ token });
 });
 
 // Inicia o servidor
