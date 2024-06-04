@@ -11,8 +11,8 @@ router.post("/meta", async (req, res) => {
       titulo: req.body.titulo,
       descricao: req.body.descricao,
       status: 0,
-      prazo: req.body.aluno,
-      prazo: req.body.prazo,
+      aluno: req.body.aluno,
+      prazo: req.body.prazo
     });
 
     await newMeta.save();
@@ -23,6 +23,11 @@ router.post("/meta", async (req, res) => {
   }
   // .then(() => res.redirect('/'))
   // .catch(err => res.status(400).send("Unable to save to database"));
+});
+
+router.get('/metas', async (req, res) => {
+  const metas = await Meta.find({});
+  res.render('metas', { metas });
 });
 
 module.exports = router;
