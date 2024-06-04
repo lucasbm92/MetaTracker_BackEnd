@@ -1,6 +1,5 @@
 const express = require("express");
-const userRoutes = require("./routes/userRoutes");
-const metaRoutes = require("./routes/metaRoutes");
+
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
 
@@ -10,9 +9,6 @@ require("./config");
 app.use(express.urlencoded({ extended: false }));
 
 const jwt = require("jsonwebtoken");
-
-app.use(userRoutes);
-app.use(metaRoutes);
 
 app.use(cookieParser());
 
@@ -54,6 +50,14 @@ app.post("/logout", (req, res) => {
   res.clearCookie("accessToken");
   res.redirect("/login");
 });
+
+module.exports = { authenticateToken };
+
+const userRoutes = require("./routes/userRoutes");
+const metaRoutes = require("./routes/metaRoutes");
+
+app.use(userRoutes);
+app.use(metaRoutes);
 
 const port = 3000;
 app.listen(port, () => {
