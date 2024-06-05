@@ -38,14 +38,15 @@ router.post("/login", async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
   if (user == null) {
     console.log("Usuário não encontrado");
-    res.redirect("/login?error=Credenciais inválidas");
+    // res.redirect("/login?error=Credenciais inválidas");
+    res.redirect("/errologin");
   }
   try {
     console.log("req.body:", req.body); // Verificar o corpo da solicitação
     console.log("user:", user); // Verificar o usuário encontrado
     if (req.body.senha === "" || user.senha === "") {
       console.log("Senha vazia");
-      res.redirect("/login?error=Credenciais inválidas");
+      res.redirect("/errologin");
     }
     if (await bcrypt.compare(req.body.senha, user.senha)) {
       const accessToken = jwt.sign(
@@ -58,7 +59,8 @@ router.post("/login", async (req, res) => {
     } else {
       console.log("Senha incorreta");
       // res.send("Senha incorreta");
-      res.redirect("/login?error=Credenciais inválidas");
+      // res.redirect("/login?error=Credenciais inválidas");
+      res.redirect("/errologin");
     }
   } catch (error) {
     console.log("Erro ao fazer login:", error);

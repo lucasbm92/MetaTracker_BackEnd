@@ -43,8 +43,18 @@ app.get("/signup", (req, res) => {
 });
 
 app.get("/login", (req, res) => {
-  const error = req.query.error ? req.query.error : null;
-  res.render("login", { error: error });
+  //const error = req.query.error ? req.query.error : null;
+  //res.render("login", { error: error });
+
+  if (req.user) {
+    if (req.user.tipo === 0) {
+      return res.redirect("/");
+    } else if (req.user.tipo === 1) {
+      return res.redirect("/");
+    }
+  } else {
+    res.render("login");
+  }
 });
 
 app.get("/errologin", (req, res) => {
