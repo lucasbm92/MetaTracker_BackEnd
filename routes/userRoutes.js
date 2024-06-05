@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const saltRounds = 10;
 
+// Rota de cadastro
 router.post("/signup", async (req, res) => {
   try {
     // console.log(req.body);
@@ -24,7 +25,8 @@ router.post("/signup", async (req, res) => {
     console.log(newUser);
 
     await newUser.save();
-    res.status(201).json({ message: "Usuário criado com sucesso!" });
+    console.log("Usuário criado com sucesso!");
+    res.redirect("/login");
   } catch (error) {
     console.error("Erro ao criar usuário:", error);
     res.status(500).json({ error: "Erro interno do servidor" });
@@ -62,6 +64,12 @@ router.post("/login", async (req, res) => {
     console.log("Erro ao fazer login:", error);
     res.redirect("/login?error=", error);
   }
+});
+
+// Rota de logout
+router.post("/logout", (req, res) => {
+  res.clearCookie("accessToken");
+  res.redirect("/login");
 });
 
 // Export the router

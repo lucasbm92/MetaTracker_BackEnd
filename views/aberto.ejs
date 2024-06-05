@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Login</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <%- include('navbar') %>
+    <table class="table table-striped table-hover">
+      <thead class="thead-dark">
+        <tr>
+          <th>Titulo</th>
+          <th>Descricao</th>
+          <th>Status</th>
+          <th>Prazo</th>
+          <th>Aluno</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% metas.forEach(meta => { %>
+        <tr>
+          <td><%= meta.titulo %></td>
+          <td><%= meta.descricao %></td>
+          <td>
+            <% if (meta.status === 0) { %> Em aberto <% } else if (meta.status
+            === 1) { %> Concluído <% } else if (meta.status === 2) { %> Concl.
+            com atraso <% } %>
+          </td>
+          <td>
+            <% let prazo = new Date(meta.prazo); let day =
+            prazo.getDate().toString().padStart(2, '0'); let month =
+            (prazo.getMonth() + 1).toString().padStart(2, '0'); let year =
+            prazo.getFullYear(); let formattedPrazo = day + '/' + month + '/' +
+            year; %> <%= formattedPrazo %>
+          </td>
+          <td><%= meta.aluno %></td>
+          <td>
+            <button class="deleteButton" data-id="<%= meta.id %>">
+              Excluir
+            </button>
+          </td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+    <script>
+      document.addEventListener("DOMContentLoaded", (event) => {
+        document
+          .getElementById("logoutButton")
+          .addEventListener("click", function () {
+            fetch("/logout", { method: "POST" })
+              .then((response) => {
+                if (response.ok) {
+                  window.location.href = "/login";
+                } else {
+                  console.error("Logout failed");
+                }
+              })
+              .catch(console.error);
+          });
+      });
+
+      document.addEventListener("DOMContentLoaded", (event) => {
+        const deleteButtons = document.querySelectorAll(".deleteButton");
+        deleteButtons.forEach((button) => {
+          button.addEventListener("click", function () {
+            const id = this.getAttribute("data-id");
+            fetch("/deleteMeta/" + id, { method: "DELETE" })
+              .then((response) => {
+                if (response.ok) {
+                  console.log("Meta excluída com sucesso!");
+                  window.location.reload();
+                } else {
+                  console.error("Delete failed");
+                }
+              })
+              .catch(console.error);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

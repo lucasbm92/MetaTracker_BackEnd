@@ -4,6 +4,8 @@ require("dotenv").config();
 const cookieParser = require("cookie-parser");
 
 const app = express();
+app.use(express.json());
+
 require("./config");
 
 app.use(express.urlencoded({ extended: false }));
@@ -14,10 +16,9 @@ app.use(cookieParser());
 
 app.set("view engine", "ejs");
 
-function authenticateToken(req, res, next) {
-  // const authHeader = req.headers["authorization"];
-  // const token = authHeader && authHeader.split(" ")[1];
+app.use(express.static(__dirname + "/public"));
 
+function authenticateToken(req, res, next) {
   const token = req.cookies.accessToken;
 
   if (token == null) return res.redirect("login");
@@ -30,7 +31,11 @@ function authenticateToken(req, res, next) {
 }
 
 app.get("/", authenticateToken, (req, res) => {
-  res.render("novameta");
+  if (req.user.tipo === 0) {
+    res.render("homealuno");
+  } else {
+    res.render("homeprofessor");
+  }
 });
 
 app.get("/signup", (req, res) => {
@@ -46,9 +51,20 @@ app.get("/novameta", authenticateToken, (req, res) => {
   res.render("novameta");
 });
 
-app.post("/logout", (req, res) => {
-  res.clearCookie("accessToken");
-  res.redirect("/login");
+app.get("/homealuno", authenticateToken, (req, res) => {
+  res.render("homealuno");
+});
+
+app.get("/homeprofessor", authenticateToken, (req, res) => {
+  res.render("homeprofessor");
+});
+
+app.get("/metasaluno", authenticateToken, (req, res) => {
+  res.render("metasaluno");
+});
+
+app.get("/metasprofessor", authenticateToken, (req, res) => {
+  res.render("metasprofessor");
 });
 
 module.exports = { authenticateToken };
