@@ -1,5 +1,5 @@
  # Use a imagem oficial do Node.js
-FROM node:14
+FROM node:16
 
 # Defina o diretório de trabalho no contêiner
 WORKDIR /usr/src/app
@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 8080
 
 # Comando para iniciar o app
-CMD [ "node", "server.js" ]
+CMD [ "node", "main.js" ]
