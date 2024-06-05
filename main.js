@@ -75,7 +75,7 @@ const metaRoutes = require("./routes/metaRoutes");
 app.use(userRoutes);
 app.use(metaRoutes);
 
-const port = 3000;
+const port = 8080;
 app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`);
 });
