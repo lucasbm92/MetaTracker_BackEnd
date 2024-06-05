@@ -47,6 +47,10 @@ app.get("/login", (req, res) => {
   res.render("login", { error: error });
 });
 
+app.get("/errologin", (req, res) => {
+  res.render("errologin");
+});
+
 app.get("/novameta", authenticateToken, (req, res) => {
   res.render("novameta");
 });
