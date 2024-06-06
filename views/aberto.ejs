@@ -7,24 +7,32 @@
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
     />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+      .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f2f2f2; /* Esta é uma cor cinza clara */
+      }
+    </style>
   </head>
   <body>
     <%- include('navbar') %>
     <table class="table table-striped table-hover">
-      <thead class="thead-dark">
+      <thead style="background-color: #c20608; color: #ffffff">
         <tr>
           <th>Titulo</th>
           <th>Descricao</th>
           <th>Status</th>
           <th>Prazo</th>
           <th>Aluno</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         <% metas.forEach(meta => { %>
         <tr>
           <td><%= meta.titulo %></td>
-          <td><%= meta.descricao %></td>
+          <td style="word-break: break-all; white-space: normal">
+            <%= meta.descricao %>
+          </td>
           <td>
             <% if (meta.status === 0) { %> Em aberto <% } else if (meta.status
             === 1) { %> Concluído <% } else if (meta.status === 2) { %> Concl.

@@ -99,13 +99,15 @@
     </style>
   </head>
   <body>
-    <%- include('navbar') %>
     <div class="content">
       <div class="left-half">
         <img src="img/icon_txt.png" alt="Icon" class="img-fluid" />
       </div>
-      <div class="right-half">
+      
         <div class="main-content">
+          <div class="back-button-container" style="text-align: right; padding: 10px;">
+            <a href="#" class="btn btn-primary" onclick="history.back();">Voltar</a>
+          </div>
           <div class="btn-container">
             <a href="/alunometasaberto" class="btn btn-primary btn-lg"
               >Ver Metas</a

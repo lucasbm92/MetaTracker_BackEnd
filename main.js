@@ -62,23 +62,43 @@ app.get("/errologin", (req, res) => {
 });
 
 app.get("/novameta", authenticateToken, (req, res) => {
-  res.render("novameta");
+  if (req.user.tipo === 1) {
+    res.render("novameta");
+  } else {
+    res.render("homealuno");
+  }
 });
 
 app.get("/homealuno", authenticateToken, (req, res) => {
-  res.render("homealuno");
+  if (req.user.tipo === 0) {
+    res.render("homealuno");
+  } else {
+    res.render("homeprofessor");
+  }
 });
 
 app.get("/homeprofessor", authenticateToken, (req, res) => {
-  res.render("homeprofessor");
+  if (req.user.tipo === 1) {
+    res.render("homeprofessor");
+  } else {
+    res.render("homealuno");
+  }
 });
 
 app.get("/metasaluno", authenticateToken, (req, res) => {
-  res.render("metasaluno");
+  if (req.user.tipo === 0) {
+    res.render("metasaluno");
+  } else {
+    res.render("metasprofessor");
+  }
 });
 
 app.get("/metasprofessor", authenticateToken, (req, res) => {
-  res.render("metasprofessor");
+  if (req.user.tipo === 1) {
+    res.render("metasprofessor");
+  } else {
+    res.render("metasaluno");
+  }
 });
 
 module.exports = { authenticateToken };
