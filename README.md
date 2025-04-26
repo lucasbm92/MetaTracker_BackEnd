@@ -1,1 +1,1 @@
-# MetaTracker_BackEnd
+MetaTracker é uma aplicação web que permite a definição, acompanhamento e gerenciamento de metas entre professores e alunos de forma eficiente e intuitiva.
